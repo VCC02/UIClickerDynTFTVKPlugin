@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectSession>
+    <PathDelim Value="\"/>
+    <Version Value="12"/>
+    <BuildModes Active="Default"/>
+    <Units>
+      <Unit>
+        <Filename Value="UIClickerDynTFTVK.ppr"/>
+        <FRMtype Value="0"/>
+        <IsPartOfProject Value="True"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="0"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="275"/>
+        <CursorPos X="22" Y="290"/>
+        <UsageCount Value="76"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="DynTFTVKDM.pas"/>
+        <FRMtype Value="300"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="dmProperties"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="DataModule"/>
+        <EditorIndex Value="9"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="28"/>
+        <CursorPos X="30" Y="32"/>
+        <UsageCount Value="76"/>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\UIClicker\ClickerUtils\ClickerUtils.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="7"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="138"/>
+        <CursorPos X="17" Y="154"/>
+        <UsageCount Value="56"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\UIClicker\ClickerClient\DllUtils.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="0"/>
+        <WindowIndex Value="0"/>
+        <UsageCount Value="56"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\UIClicker\ClickerUtils\ClickerActionPlugins.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="8"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="39"/>
+        <CursorPos X="3" Y="52"/>
+        <UsageCount Value="56"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="DynTFTVKPluginProperties.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="0"/>
+        <WindowIndex Value="0"/>
+        <UsageCount Value="22"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\UIClicker\BitmapConv.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="0"/>
+        <WindowIndex Value="0"/>
+        <UsageCount Value="22"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\UIClicker\BitmapProcessing.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="0"/>
+        <WindowIndex Value="0"/>
+        <UsageCount Value="22"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\MiscUtils\CLHeaders.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="0"/>
+        <WindowIndex Value="0"/>
+        <UsageCount Value="22"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\UIClicker\ClickerUtils\ClickerFileProviderUtils.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="0"/>
+        <WindowIndex Value="0"/>
+        <UsageCount Value="22"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\UIClicker\ClickerUtils\ClickerActionProperties.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="0"/>
+        <WindowIndex Value="0"/>
+        <UsageCount Value="22"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\UIClicker\ClickerUtils\ClickerActionPluginAccess.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="6"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="222"/>
+        <CursorPos Y="37"/>
+        <UsageCount Value="36"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\UIClicker\ClickerImageEffects.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="0"/>
+        <WindowIndex Value="0"/>
+        <UsageCount Value="22"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\DynTFT\DynTFTBaseDrawing.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="22"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\DynTFT\DynTFTControls.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="22"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\DynTFT\DynTFTUtils.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="4"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="181"/>
+        <UsageCount Value="22"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\DynTFT\DynTFTConsts.pas"/>
+        <FRMtype Value="0"/>
+        <EditorIndex Value="3"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="121"/>
+        <CursorPos X="44" Y="127"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\DynTFTThemes\Lava\DynTFT_LavaColors\DynTFTVirtualKeyboardX2_LavaColors.inc"/>
+        <FRMtype Value="0"/>
+        <EditorIndex Value="5"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="16"/>
+        <CursorPos X="55" Y="38"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\DynTFT\TFT.pas"/>
+        <FRMtype Value="0"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="181"/>
+        <CursorPos X="25" Y="194"/>
+        <UsageCount Value="10"/>
+      </Unit>
+      <Unit>
+        <Filename Value="DynTFTSimScreenForm.pas"/>
+        <FRMtype Value="200"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="frmDynTFTSimScreen"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <EditorIndex Value="2"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="16"/>
+        <CursorPos X="25" Y="24"/>
+        <UsageCount Value="20"/>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\DynTFT\MemManager.pas"/>
+        <FRMtype Value="0"/>
+        <EditorIndex Value="1"/>
+        <WindowIndex Value="0"/>
+        <TopLine Value="16"/>
+        <CursorPos X="21" Y="30"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit>
+    </Units>
+    <JumpHistory HistoryIndex="22">
+      <Position>
+        <Filename Value="..\UIClicker\ClickerUtils\ClickerActionPluginAccess.pas"/>
+        <Caret Line="230" TopLine="206"/>
+      </Position>
+      <Position>
+        <Filename Value="UIClickerDynTFTVK.ppr"/>
+        <Caret Line="266" Column="44" TopLine="257"/>
+      </Position>
+      <Position>
+        <Filename Value="UIClickerDynTFTVK.ppr"/>
+        <Caret Line="29" Column="65" TopLine="17"/>
+      </Position>
+      <Position>
+        <Filename Value="UIClickerDynTFTVK.ppr"/>
+        <Caret Line="25" Column="41" TopLine="19"/>
+      </Position>
+      <Position>
+        <Filename Value="UIClickerDynTFTVK.ppr"/>
+        <Caret Line="265" Column="35" TopLine="254"/>
+      </Position>
+      <Position>
+        <Filename Value="UIClickerDynTFTVK.ppr"/>
+        <Caret Line="34" Column="29" TopLine="23"/>
+      </Position>
+      <Position>
+        <Filename Value="..\DynTFT\DynTFTConsts.pas"/>
+        <Caret Line="129" Column="36" TopLine="121"/>
+      </Position>
+      <Position>
+        <Filename Value="..\DynTFT\DynTFTConsts.pas"/>
+        <Caret Line="127" Column="44" TopLine="121"/>
+      </Position>
+      <Position>
+        <Filename Value="..\DynTFTThemes\Lava\DynTFT_LavaColors\DynTFTVirtualKeyboardX2_LavaColors.inc"/>
+        <Caret Line="40" Column="62" TopLine="16"/>
+      </Position>
+      <Position>
+        <Filename Value="UIClickerDynTFTVK.ppr"/>
+        <Caret Line="36" Column="32" TopLine="23"/>
+      </Position>
+      <Position>
+        <Filename Value="UIClickerDynTFTVK.ppr"/>
+        <Caret Line="268" Column="16" TopLine="256"/>
+      </Position>
+      <Position>
+        <Filename Value="UIClickerDynTFTVK.ppr"/>
+        <Caret Line="178" Column="25" TopLine="163"/>
+      </Position>
+      <Position>
+        <Filename Value="UIClickerDynTFTVK.ppr"/>
+        <Caret Line="30" Column="92" TopLine="23"/>
+      </Position>
+      <Position>
+        <Filename Value="UIClickerDynTFTVK.ppr"/>
+        <Caret Line="117" Column="14" TopLine="112"/>
+      </Position>
+      <Position>
+        <Filename Value="UIClickerDynTFTVK.ppr"/>
+        <Caret Line="143" Column="60" TopLine="126"/>
+      </Position>
+      <Position>
+        <Filename Value="UIClickerDynTFTVK.ppr"/>
+        <Caret Line="130" Column="36" TopLine="114"/>
+      </Position>
+      <Position>
+        <Filename Value="UIClickerDynTFTVK.ppr"/>
+        <Caret Line="118" Column="27" TopLine="106"/>
+      </Position>
+      <Position>
+        <Filename Value="UIClickerDynTFTVK.ppr"/>
+        <Caret Line="31" Column="55" TopLine="24"/>
+      </Position>
+      <Position>
+        <Filename Value="UIClickerDynTFTVK.ppr"/>
+        <Caret Line="39" Column="26" TopLine="28"/>
+      </Position>
+      <Position>
+        <Filename Value="UIClickerDynTFTVK.ppr"/>
+        <Caret Line="123" Column="31" TopLine="112"/>
+      </Position>
+      <Position>
+        <Filename Value="UIClickerDynTFTVK.ppr"/>
+        <Caret Line="36" Column="28" TopLine="22"/>
+      </Position>
+      <Position>
+        <Filename Value="..\DynTFT\MemManager.pas"/>
+        <Caret Line="30" Column="21" TopLine="16"/>
+      </Position>
+      <Position>
+        <Filename Value="UIClickerDynTFTVK.ppr"/>
+        <Caret Line="132" Column="96" TopLine="111"/>
+      </Position>
+    </JumpHistory>
+    <RunParams>
+      <FormatVersion Value="2"/>
+      <Modes ActiveMode=""/>
+    </RunParams>
+  </ProjectSession>
+  <Debugging>
+    <BreakPoints>
+      <Item>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="DynTFTVKPluginProperties.pas"/>
+        <Line Value="125"/>
+      </Item>
+    </BreakPoints>
+  </Debugging>
+</CONFIG>

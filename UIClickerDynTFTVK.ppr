@@ -1,0 +1,295 @@
+{
+    Copyright (C) 2026 VCC
+    creation date: 14 Feb 2026
+    initial release date: 15 Feb 2026
+
+    author: VCC
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"),
+    to deal in the Software without restriction, including without limitation
+    the rights to use, copy, modify, merge, publish, distribute, sublicense,
+    and/or sell copies of the Software, and to permit persons to whom the
+    Software is furnished to do so, subject to the following conditions:
+    The above copyright notice and this permission notice shall be included
+    in all copies or substantial portions of the Software.
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+    EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+    MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+    IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+    DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+    TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
+    OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+}
+
+
+library UIClickerDynTFTVK;
+
+{$mode objfpc}
+{$H+}
+
+{$IFNDEF IsMCU}
+  {$DEFINE IsDesktop}
+{$ENDIF}
+
+//{$IFDEF FPC}
+//  {$MODE Delphi}
+//{$ENDIF}
+
+uses
+  LCLIntf, LCLType, Interfaces, Classes, SysUtils, Graphics, ImgList,
+  ExtCtrls, Forms,
+  ClickerActionPlugins, ClickerUtils, DllUtils,
+  DynTFTVKDM, DynTFTSimScreenForm,
+  DynTFTVKPluginProperties, ClickerActionProperties,
+  ClickerActionPluginAccess,
+  TFT, DynTFTUtils, MemManager, DynTFTMessageBox, DynTFTControls, DynTFTEdit,
+  DynTFTGUI, DynTFTGUIObjects;
+
+
+var
+  AddToLogCallback: TOnActionPlugin_AddToLog;
+
+
+procedure AddToLog(AMsg: string);  //thread safe
+begin
+  if @AddToLogCallback <> nil then
+    AddToLogCallback(DefaultPluginReference, @AMsg[1]);
+end;
+
+
+function GetAPIVersion: DWord; cdecl;
+begin
+  Result := CActionPlugin_APIVersion;
+end;
+
+
+procedure GetListOfProperties(APluginReference: Pointer;                 //UIClicker passes the plugin reference to the plugin, then the plugin calls some callbacks with that reference
+                              AListOfProperties: Pointer;
+                              AListOfPropertiesLen: PDWord;
+                              AOnActionPlugin_UpdatePropertyIcons: TOnActionPlugin_UpdatePropertyIcons); cdecl;
+var
+  Properties: string;
+begin
+  Properties := FillInPropertyDetails;
+  AListOfPropertiesLen^ := SetPointedContentFromString(Properties, AListOfProperties);
+
+  dmProperties := TdmProperties.Create(nil);
+  try
+    UpdatePropertyIcons(APluginReference, AOnActionPlugin_UpdatePropertyIcons, dmProperties.imglstProperties, CPropertiesCount);
+  finally
+    dmProperties.Free;
+  end;
+end;
+
+
+procedure GetPluginSettingsFromProperties(AProperties: TStringList; AListOfVars: string);
+begin
+  //ValueStr := AProperties.Values[C...PropertyName];
+end;
+
+
+procedure DynTFTUILoop;
+begin
+  try
+    DynTFT_GUI_LoopIteration;
+  except
+    on E: Exception do
+    begin
+      DynTFT_DebugConsole('Exception while executing DynTFT_GUI_LoopIteration: ' + E.Message);
+    end;
+  end;
+end;
+
+
+procedure HandleMessageBox(AMessageBox: PDynTFTMessageBox);
+begin
+  repeat
+    DynTFTUILoop;
+    Application.ProcessMessages;
+    Sleep(1);
+  until AMessageBox^.Done or not frmDynTFTSimScreen.Running;
+end;
+
+
+procedure RunDynTFT(APluginReference: Pointer; AOnActionPlugin_SetTemplateVar: TOnActionPlugin_SetTemplateVar; AEditBoxVarName, ACurrentValue, APluginPath: string);
+var
+  tmrBlinkCaret: TTimer;
+  EditBoxVarValue: string;
+begin
+  UseTFTTrueColor := True;
+  //DynTFT_AssignDebugConsole(lstLog);
+  GCanvas := nil; //init here, then wait until it is properly initialized
+
+  Application.Initialize;
+  Application.CreateForm(TfrmDynTFTSimScreen, frmDynTFTSimScreen);
+  try
+    frmDynTFTSimScreen.PluginPath := APluginPath;
+    repeat
+      Application.ProcessMessages;
+      Sleep(1);
+    until GCanvas <> nil;  //will be created in startup timer
+
+    frmDynTFTSimScreen.Running := True;
+    //lstLog.Clear;
+    MM_Init;
+
+    GCanvas.Pen.Color := $0088FF;
+    GCanvas.Brush.Color := clSilver;
+    GCanvas.Rectangle(0, 0, frmDynTFTSimScreen.imgScreen.Width, frmDynTFTSimScreen.imgScreen.Height);
+
+    DynTFT_Init(frmDynTFTSimScreen.trbScreenWidth.Position, frmDynTFTSimScreen.trbScreenHeight.Position);
+    frmDynTFTSimScreen.Show;
+
+    tmrBlinkCaret := TTimer.Create(nil);
+    try
+      tmrBlinkCaret.Interval := 500;
+      tmrBlinkCaret.OnTimer := @frmDynTFTSimScreen.tmrBlinkCaretTimer;
+
+      New(DynTFTMessageBoxMainLoopHandler);
+      try
+        try
+          DynTFT_GUI_Start;
+          DynTFTSetScreenSizeForMessageBox(TFT_DISP_WIDTH, TFT_DISP_HEIGHT);
+          DynTFTMessageBoxMainLoopHandler^ := @HandleMessageBox;
+
+          tmrBlinkCaret.Enabled := True;
+        except
+          on E: Exception do
+          begin
+            DynTFT_DebugConsole('Exception in DynTFT_GUI_Start: ' + E.Message);
+          end;
+        end;
+
+        edtValue^.BaseProps.Focused := 1;
+        edtValue^.Text := Copy(ACurrentValue, 1, CMaxEditStringLength);
+        DynTFTMoveEditCaretToEnd(edtValue);
+        DynTFTDrawEdit(edtValue, True);
+        repeat
+          DynTFTUILoop;
+          Application.ProcessMessages;
+          Sleep(1);
+
+          EditBoxVarValue := edtValue^.Text;
+        until not frmDynTFTSimScreen.Running;  //Becomes false when closing the app.
+      finally
+        Dispose(DynTFTMessageBoxMainLoopHandler);
+      end;
+
+      AOnActionPlugin_SetTemplateVar(APluginReference, @AEditBoxVarName[1], @EditBoxVarValue[1]);
+    finally
+      tmrBlinkCaret.Free;
+    end;
+  finally
+    frmDynTFTSimScreen.Free;
+  end;
+end;
+
+
+function ExecutePlugin(APluginReference: Pointer;
+                       AListOfPluginSettings: Pointer;
+                       AListOfPluginSettingsLen: PDWord;
+
+                       AOnActionPlugin_GetActionCount: TOnActionPlugin_GetActionCount;
+                       AOnActionPlugin_GetActionInfoByIndex: TOnActionPlugin_GetActionInfoByIndex;
+                       AOnActionPlugin_GetActionContentByIndex: TOnActionPlugin_GetActionContentByIndex;
+                       AOnActionPlugin_ExecuteAction: TOnActionPlugin_ExecuteAction;
+                       AOnActionPlugin_GetAllTemplateVars: TOnActionPlugin_GetAllTemplateVars;
+                       AOnActionPlugin_SetTemplateVar: TOnActionPlugin_SetTemplateVar;
+                       AOnActionPlugin_DebugPoint: TOnActionPlugin_DebugPoint;
+                       AOnActionPlugin_AddToLog: TOnActionPlugin_AddToLog;
+                       AOnActionPlugin_SetResultImg: TOnActionPlugin_SetResultImg;
+                       AOnActionPlugin_LoadBitmap: TOnActionPlugin_LoadBitmap;
+                       AOnActionPlugin_GetAllowedFilesInfo: TOnActionPlugin_GetAllowedFilesInfo;
+                       AOnActionPlugin_SetBitmap: TOnActionPlugin_SetBitmap;
+                       AOnActionPlugin_Screenshot: TOnActionPlugin_Screenshot;
+                       AOnActionPlugin_CheckStopAllActionsOnDemand: TOnActionPlugin_CheckStopAllActionsOnDemand;
+                       AOnActionPlugin_InMemFS: TOnActionPlugin_InMemFS;
+                       AOnActionPlugin_AppProcMsg: TOnActionPlugin_AppProcMsg
+                       ): Boolean; cdecl;
+var
+  PluginSettingsStr, AllVarsStr: string;
+  ListOfAllVars: TStringList;
+  PluginSettings: TStringList;
+
+
+  procedure SetTemplateVar(AVarName, AVarValue: string);
+  begin
+    AOnActionPlugin_SetTemplateVar(APluginReference, @AVarName[1], @AVarValue[1]);
+  end;
+
+  procedure GetAllTemplateVars(out AAllTemplateVars: string);  //AAllTemplateVars are encoded as CRLF separated key=value strings, ready to be used on a TStringlist
+  var
+    Buffer: string;
+    AllTemplateVarsPtr: Pointer;
+    NameLengthDWord: DWord;
+  begin
+    SetLength(Buffer, CMaxSharedStringLength + 1);
+    AllTemplateVarsPtr := @Buffer[1];
+    NameLengthDWord := 0;
+    AAllTemplateVars := '';
+
+    AOnActionPlugin_GetAllTemplateVars(APluginReference, AllTemplateVarsPtr, @NameLengthDWord);  //decode action execution results
+
+    SetPointedContentToString(AllTemplateVarsPtr, AAllTemplateVars);
+    SetLength(AAllTemplateVars, NameLengthDWord);
+  end;
+
+  function GetPluginSettings: string;
+  begin
+    SetLength(Result, CMaxSharedStringLength);
+    SetPointedContentToString(AListOfPluginSettings, Result);
+    SetLength(Result, AListOfPluginSettingsLen^);
+  end;
+
+begin
+  Result := True;
+  try
+    DefaultOnActionPlugin_DebugPoint := AOnActionPlugin_DebugPoint;
+    DefaultPluginReference := APluginReference;
+    AddToLogCallback := AOnActionPlugin_AddToLog;
+
+    ListOfAllVars := TStringList.Create;
+    try
+      PluginSettings := TStringList.Create;
+      try
+        if not DbgPoint('Entering ExecutePlugin', '') then     //see ClkDbgSym.ppr for expected statement formats
+          Exit;
+
+        PluginSettingsStr := GetPluginSettings;
+        PluginSettings.Text := PluginSettingsStr;
+
+        if PluginSettings.Count <> CPropertiesCount then
+        begin
+          SetTemplateVar(CActionPlugin_ExecutionResultErrorVar, 'Cannot get the list of plugin properties.');
+          Exit;
+        end;
+
+        GetAllTemplateVars(AllVarsStr);
+        GetPluginSettingsFromProperties(PluginSettings, AllVarsStr);
+        ListOfAllVars.Text := AllVarsStr;
+      finally
+        PluginSettings.Free;
+      end;
+
+      RunDynTFT(APluginReference, AOnActionPlugin_SetTemplateVar, '$EditBox.Text$', ListOfAllVars.Values['$EditBox.Text$'], ListOfAllVars.Values['$PluginPath$']);
+    finally
+      ListOfAllVars.Free;
+    end;
+  except
+    on E: Exception do
+    begin
+      Result := False;
+      SetTemplateVar(CActionPlugin_ExecutionResultErrorVar, 'Plugin ex: ' + E.Message);
+    end;
+  end;
+end;
+
+
+exports
+  GetAPIVersion,
+  GetListOfProperties,
+  ExecutePlugin;
+
+begin
+end.
+
