@@ -124,9 +124,6 @@ end;
 procedure CreateGUI_Screen_0; //Tab
 begin
   vkTest := DynTFTVirtualKeyboard_Create(0, 1, 55, 318, 184);
-  {$IFDEF DynTFTFontSupport} 
-    vkTest^.ActiveFont := {$IFDEF IsDesktop} PByte(@CAllFontSettings[-1]) {$ELSE}  {$ENDIF};
-  {$ENDIF} 
   {$IFDEF IsDesktop}
     vkTest^.OnCharKey^ := VirtualKeyboard_OnCharKey;
   {$ELSE}
