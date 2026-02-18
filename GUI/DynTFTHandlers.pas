@@ -45,14 +45,14 @@ uses
   
 
 //<DynTFTComponents>
-  DynTFTButton,
+  //DynTFTButton,
   //DynTFTArrowButton,
   //DynTFTPanel,
-  //DynTFTCheckBox,
+  DynTFTCheckBox,
   //DynTFTScrollBar,
   //DynTFTItems,
   //DynTFTListBox,
-  DynTFTLabel,
+  //DynTFTLabel,
   //DynTFTRadioButton,
   //DynTFTRadioGroup,
   //DynTFTTabButton,
@@ -63,9 +63,9 @@ uses
   //DynTFTComboBox,
   //DynTFTTrackBar,
   //DynTFTProgressBar,
-  DynTFTMessageBox
+  //DynTFTMessageBox,
   //DynTFTVirtualTable,
-  //DynTFTVirtualKeyboardX2,
+  DynTFTVirtualKeyboardX2
 //<EndOfDynTFTComponents> - Do not remove or modify this line!
 
   {$IFDEF IsDesktop}
@@ -83,10 +83,17 @@ uses
   ;
 
 //CodegenSym:GroupsBegin
+procedure CreateGUIGrp_Startup;
+procedure DestroyGUIGrp_Startup;
+procedure CreateGUIGrp_StartupX2;
+procedure DestroyGUIGrp_StartupX2;
 //CodegenSym:GroupsEnd
 
 procedure VirtualKeyboard_OnCharKey(Sender: PPtrRec; var PressedChar: TVKPressedChar; CurrentShiftState: TPtr); //CodegenSym:header
 procedure VirtualKeyboard_OnSpecialKey(Sender: PPtrRec; SpecialKey: Integer; CurrentShiftState: TPtr); //CodegenSym:header
+procedure chkPasswordChar_OnMouseUpUser(Sender: PPtrRec); //CodegenSym:header
+procedure VirtualKeyboardX2_OnCharKey(Sender: PPtrRec; var PressedChar: TVKPressedChar; CurrentShiftState: TPtr); //CodegenSym:header
+procedure VirtualKeyboardX2_OnSpecialKey(Sender: PPtrRec; SpecialKey: Integer; CurrentShiftState: TPtr); //CodegenSym:header
 
 //CodegenSym:AllBinHandlersBegin
 
@@ -118,6 +125,77 @@ implementation
 //CodegenSym:UpdateBinHandlersProcEnd
 
 //CodegenSym:CreationGroups
+procedure CreateGUIGrp_Startup;
+begin
+  vkTest := DynTFTVirtualKeyboard_Create(0, 1, 55, 318, 184);
+  {$IFDEF IsDesktop}
+    vkTest^.OnCharKey^ := VirtualKeyboard_OnCharKey;
+  {$ELSE}
+    vkTest^.OnCharKey := @VirtualKeyboard_OnCharKey;
+  {$ENDIF}
+  {$IFDEF IsDesktop}
+    vkTest^.OnSpecialKey^ := VirtualKeyboard_OnSpecialKey;
+  {$ELSE}
+    vkTest^.OnSpecialKey := @VirtualKeyboard_OnSpecialKey;
+  {$ENDIF}
+  {$IFDEF DynTFTFontSupport}
+    DynTFTSetVirtualKeyboardActiveFont(vkTest);
+  {$ENDIF}
+
+  {$IFDEF RTTIREG}
+    //Group "Startup"   at index: 0
+    ExecuteDesignRTTIInstructions_Create(CDynTFT_InstructionFilter_CreateSingleGroup_BitMask or 0);
+  {$ENDIF}
+end;
+
+procedure DestroyGUIGrp_Startup;
+begin
+  DynTFTVirtualKeyboard_Destroy(vkTest);
+
+  {$IFDEF RTTIREG}
+    //Group "Startup"   at index: 0
+    ExecuteDesignRTTIInstructions_Destroy(CDynTFT_InstructionFilter_CreateSingleGroup_BitMask or 0);
+  {$ENDIF}
+end;
+
+
+procedure CreateGUIGrp_StartupX2;
+begin
+  vkTestX2 := DynTFTVirtualKeyboardX2_Create(0, 3, 70, 638, 370);
+  {$IFDEF DynTFTFontSupport} 
+    vkTestX2^.ActiveFont := {$IFDEF IsDesktop} PByte(@CAllFontSettings[0]) {$ELSE} @Verdana29x32_ItalicUnderLine {$ENDIF};
+  {$ENDIF} 
+  {$IFDEF IsDesktop}
+    vkTestX2^.OnCharKey^ := VirtualKeyboardX2_OnCharKey;
+  {$ELSE}
+    vkTestX2^.OnCharKey := @VirtualKeyboardX2_OnCharKey;
+  {$ENDIF}
+  {$IFDEF IsDesktop}
+    vkTestX2^.OnSpecialKey^ := VirtualKeyboardX2_OnSpecialKey;
+  {$ELSE}
+    vkTestX2^.OnSpecialKey := @VirtualKeyboardX2_OnSpecialKey;
+  {$ENDIF}
+  {$IFDEF DynTFTFontSupport}
+    DynTFTSetVirtualKeyboardActiveFontX2(vkTestX2);
+  {$ENDIF}
+
+  {$IFDEF RTTIREG}
+    //Group "StartupX2"   at index: 1
+    ExecuteDesignRTTIInstructions_Create(CDynTFT_InstructionFilter_CreateSingleGroup_BitMask or 1);
+  {$ENDIF}
+end;
+
+procedure DestroyGUIGrp_StartupX2;
+begin
+  DynTFTVirtualKeyboardX2_Destroy(vkTestX2);
+
+  {$IFDEF RTTIREG}
+    //Group "StartupX2"   at index: 1
+    ExecuteDesignRTTIInstructions_Destroy(CDynTFT_InstructionFilter_CreateSingleGroup_BitMask or 1);
+  {$ENDIF}
+end;
+
+
 
 //CodegenSym:HandlersImplementation
 
@@ -167,7 +245,59 @@ begin //CodegenSym:handler:begin
     begin
       edtValue.Text := '';
       DynTFTMoveEditCaretToHome(edtValue);
-      DynTFTDrawEdit(edtValue, True);
+      DynTFTEditAfterTypingText(edtValue); //DynTFTDrawEdit(edtValue, True);
+    end;
+  end;
+end; //CodegenSym:handler:end
+
+
+procedure VirtualKeyboardX2_OnCharKey(Sender: PPtrRec; var PressedChar: TVKPressedChar; CurrentShiftState: TPtr); //CodegenSym:handler
+var
+  AText: string {$IFNDEF IsDesktop}[CMaxKeyButtonStringLength] {$ENDIF};
+begin //CodegenSym:handler:begin
+  if PDynTFTVirtualKeyboardX2(TPtrRec(Sender))^.ShiftState and CDYNTFTSS_CTRL = CDYNTFTSS_CTRL then
+    Exit;
+
+  if PDynTFTVirtualKeyboardX2(TPtrRec(Sender))^.ShiftState and CDYNTFTSS_ALT = CDYNTFTSS_ALT then
+    Exit;
+
+  AText := PressedChar;
+  DynTFTEditInsertTextAtCaret(edtValue, AText);
+
+  if edtValue^.BaseProps.Focused and CFOCUSED <> CFOCUSED then
+    DynTFTFocusComponent(PDynTFTBaseComponent(TPtrRec(edtValue)));
+end; //CodegenSym:handler:end
+
+
+procedure VirtualKeyboardX2_OnSpecialKey(Sender: PPtrRec; SpecialKey: Integer; CurrentShiftState: TPtr); //CodegenSym:handler
+begin //CodegenSym:handler:begin
+  case SpecialKey of                                            //This code can be refactored and moved to a different unit.
+    VK_BACK : DynTFTEditBackspaceAtCaret(edtValue);
+
+    VK_DELETE :
+    begin
+      if CurrentShiftState and CDYNTFTSS_CTRL_ALT = CDYNTFTSS_CTRL_ALT then
+        {$IFNDEF IsDesktop}
+          Reset;
+        {$ELSE}
+          Application.MainForm.Close;
+        {$ENDIF}
+      DynTFTEditDeleteAtCaret(edtValue);
+    end;
+
+    VK_LEFT: DynTFTMoveEditCaretToLeft(edtValue, 1);
+
+    VK_RIGHT: DynTFTMoveEditCaretToRight(edtValue, 1);
+
+    VK_HOME: DynTFTMoveEditCaretToHome(edtValue);
+
+    VK_END: DynTFTMoveEditCaretToEnd(edtValue);
+
+    VK_APPS:
+    begin
+      edtValue.Text := '';
+      DynTFTMoveEditCaretToHome(edtValue);
+      DynTFTEditAfterTypingText(edtValue); //DynTFTDrawEdit(edtValue, True);
     end;
   end;
 end; //CodegenSym:handler:end
@@ -181,5 +311,15 @@ begin //CodegenSym:handler:begin
     IntToStr(Index, ItemText);
   {$ENDIF}
 end; //CodegenSym:handler:end
+
+
+procedure chkPasswordChar_OnMouseUpUser(Sender: PPtrRec); //CodegenSym:handler
+begin //CodegenSym:handler:begin
+  edtValue^.PasswordText := PDynTFTCheckBox(TPtrRec(Sender))^.Checked;
+  DynTFTEditAfterTypingText(edtValue);
+  DynTFTFocusComponent(PDynTFTBaseComponent(TPtrRec(edtValue)));
+end; //CodegenSym:handler:end
+
+
 
 end.

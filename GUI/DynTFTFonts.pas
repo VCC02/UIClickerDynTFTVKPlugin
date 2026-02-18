@@ -45,7 +45,7 @@ uses
 
 
 const
-  CAllFontSettings: array[-1..0] of TDynTFTFontSettings = (
+  CAllFontSettings: array[-1..1] of TDynTFTFontSettings = (
     ( //TFT_fallbackFont  (Fallback font, used when the property mentions an undefined font.)
       FontName: 'Tahoma';
       IdentifierName: 'TFT_defaultFont';
@@ -63,16 +63,29 @@ const
       IdentifierName: 'Verdana29x32_ItalicUnderLine';
       FontSize: 20;
       Bold: False;
-      Italic: True;
-      Underline: True;
+      Italic: False;
+      Underline: False;
       StrikeOut: False;
       Charset: 1;
+      Pitch: TFontPitch(0)
+    )
+    ,
+    ( //@Tahoma
+      FontName: 'Tahoma';
+      IdentifierName: 'Tahoma';
+      FontSize: 8;
+      Bold: False;
+      Italic: False;
+      Underline: False;
+      StrikeOut: False;
+      Charset: 0;
       Pitch: TFontPitch(0)
     )
   );
 
 var
   Verdana29x32_ItalicUnderLine_Font: TDynTFTFontSettings;
+  Tahoma_Font: TDynTFTFontSettings;
 
 implementation
 
@@ -82,5 +95,6 @@ var
 
 initialization
   Verdana29x32_ItalicUnderLine_Font := CAllFontSettings[0];
+  Tahoma_Font := CAllFontSettings[1];
 end.
 

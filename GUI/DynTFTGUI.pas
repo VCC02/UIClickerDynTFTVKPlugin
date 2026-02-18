@@ -38,14 +38,14 @@ uses
   DynTFTGUIObjects, DynTFTHandlers,
 
 //<DynTFTComponents>
-  DynTFTButton,
+  //DynTFTButton,
   //DynTFTArrowButton,
   //DynTFTPanel,
-  //DynTFTCheckBox,
+  DynTFTCheckBox,
   //DynTFTScrollBar,
   //DynTFTItems,
   //DynTFTListBox,
-  DynTFTLabel,
+  //DynTFTLabel,
   //DynTFTRadioButton,
   //DynTFTRadioGroup,
   //DynTFTTabButton,
@@ -56,9 +56,9 @@ uses
   //DynTFTComboBox,
   //DynTFTTrackBar,
   //DynTFTProgressBar,
-  DynTFTMessageBox
+  //DynTFTMessageBox,
   //DynTFTVirtualTable,
-  //DynTFTVirtualKeyboardX2,
+  DynTFTVirtualKeyboardX2
 //<EndOfDynTFTComponents> - Do not remove or modify this line!
 
   
@@ -98,14 +98,14 @@ end;
 
 procedure RegisterAllComponentsEvents;
 begin
-  DynTFTRegisterButtonEvents;        {$IFDEF IsDesktop}DynTFT_DebugConsole('DynTFTButton type: ' + IntToStr(DynTFTGetButtonComponentType));{$ENDIF}
+  //DynTFTRegisterButtonEvents;        {$IFDEF IsDesktop}DynTFT_DebugConsole('DynTFTButton type: ' + IntToStr(DynTFTGetButtonComponentType));{$ENDIF}
   //DynTFTRegisterArrowButtonEvents;        {$IFDEF IsDesktop}DynTFT_DebugConsole('DynTFTArrowButton type: ' + IntToStr(DynTFTGetArrowButtonComponentType));{$ENDIF}
   //DynTFTRegisterPanelEvents;        {$IFDEF IsDesktop}DynTFT_DebugConsole('DynTFTPanel type: ' + IntToStr(DynTFTGetPanelComponentType));{$ENDIF}
-  //DynTFTRegisterCheckBoxEvents;        {$IFDEF IsDesktop}DynTFT_DebugConsole('DynTFTCheckBox type: ' + IntToStr(DynTFTGetCheckBoxComponentType));{$ENDIF}
+  DynTFTRegisterCheckBoxEvents;        {$IFDEF IsDesktop}DynTFT_DebugConsole('DynTFTCheckBox type: ' + IntToStr(DynTFTGetCheckBoxComponentType));{$ENDIF}
   //DynTFTRegisterScrollBarEvents;        {$IFDEF IsDesktop}DynTFT_DebugConsole('DynTFTScrollBar type: ' + IntToStr(DynTFTGetScrollBarComponentType));{$ENDIF}
   //DynTFTRegisterItemsEvents;        {$IFDEF IsDesktop}DynTFT_DebugConsole('DynTFTItems type: ' + IntToStr(DynTFTGetItemsComponentType));{$ENDIF}
   //DynTFTRegisterListBoxEvents;        {$IFDEF IsDesktop}DynTFT_DebugConsole('DynTFTListBox type: ' + IntToStr(DynTFTGetListBoxComponentType));{$ENDIF}
-  DynTFTRegisterLabelEvents;        {$IFDEF IsDesktop}DynTFT_DebugConsole('DynTFTLabel type: ' + IntToStr(DynTFTGetLabelComponentType));{$ENDIF}
+  //DynTFTRegisterLabelEvents;        {$IFDEF IsDesktop}DynTFT_DebugConsole('DynTFTLabel type: ' + IntToStr(DynTFTGetLabelComponentType));{$ENDIF}
   //DynTFTRegisterRadioButtonEvents;        {$IFDEF IsDesktop}DynTFT_DebugConsole('DynTFTRadioButton type: ' + IntToStr(DynTFTGetRadioButtonComponentType));{$ENDIF}
   //DynTFTRegisterRadioGroupEvents;        {$IFDEF IsDesktop}DynTFT_DebugConsole('DynTFTRadioGroup type: ' + IntToStr(DynTFTGetRadioGroupComponentType));{$ENDIF}
   //DynTFTRegisterTabButtonEvents;        {$IFDEF IsDesktop}DynTFT_DebugConsole('DynTFTTabButton type: ' + IntToStr(DynTFTGetTabButtonComponentType));{$ENDIF}
@@ -116,29 +116,29 @@ begin
   //DynTFTRegisterComboBoxEvents;        {$IFDEF IsDesktop}DynTFT_DebugConsole('DynTFTComboBox type: ' + IntToStr(DynTFTGetComboBoxComponentType));{$ENDIF}
   //DynTFTRegisterTrackBarEvents;        {$IFDEF IsDesktop}DynTFT_DebugConsole('DynTFTTrackBar type: ' + IntToStr(DynTFTGetTrackBarComponentType));{$ENDIF}
   //DynTFTRegisterProgressBarEvents;        {$IFDEF IsDesktop}DynTFT_DebugConsole('DynTFTProgressBar type: ' + IntToStr(DynTFTGetProgressBarComponentType));{$ENDIF}
-  DynTFTRegisterMessageBoxEvents;        {$IFDEF IsDesktop}DynTFT_DebugConsole('DynTFTMessageBox type: ' + IntToStr(DynTFTGetMessageBoxComponentType));{$ENDIF}
+  //DynTFTRegisterMessageBoxEvents;        {$IFDEF IsDesktop}DynTFT_DebugConsole('DynTFTMessageBox type: ' + IntToStr(DynTFTGetMessageBoxComponentType));{$ENDIF}
   //DynTFTRegisterVirtualTableEvents;        {$IFDEF IsDesktop}DynTFT_DebugConsole('DynTFTVirtualTable type: ' + IntToStr(DynTFTGetVirtualTableComponentType));{$ENDIF}
-  //DynTFTRegisterVirtualKeyboardX2Events;        {$IFDEF IsDesktop}DynTFT_DebugConsole('DynTFTVirtualKeyboardX2 type: ' + IntToStr(DynTFTGetVirtualKeyboardX2ComponentType));{$ENDIF}
+  DynTFTRegisterVirtualKeyboardX2Events;        {$IFDEF IsDesktop}DynTFT_DebugConsole('DynTFTVirtualKeyboardX2 type: ' + IntToStr(DynTFTGetVirtualKeyboardX2ComponentType));{$ENDIF}
 end;
 
 procedure CreateGUI_Screen_0; //Tab
 begin
-  vkTest := DynTFTVirtualKeyboard_Create(0, 1, 55, 318, 184);
-  {$IFDEF IsDesktop}
-    vkTest^.OnCharKey^ := VirtualKeyboard_OnCharKey;
-  {$ELSE}
-    vkTest^.OnCharKey := @VirtualKeyboard_OnCharKey;
-  {$ENDIF}
-  {$IFDEF IsDesktop}
-    vkTest^.OnSpecialKey^ := VirtualKeyboard_OnSpecialKey;
-  {$ELSE}
-    vkTest^.OnSpecialKey := @VirtualKeyboard_OnSpecialKey;
-  {$ENDIF}
-  {$IFDEF DynTFTFontSupport}
-    DynTFTSetVirtualKeyboardActiveFont(vkTest);
-  {$ENDIF}
+  // vkTest should be manually created.
 
   edtValue := DynTFTEdit_Create(0, 1, 26, 318, 24);
+
+  chkPasswordChar := DynTFTCheckBox_Create(0, 222, 3, 97, 16);
+  chkPasswordChar^.Caption := C_chkPasswordChar_Caption; //'Password char'
+  {$IFDEF DynTFTFontSupport} 
+    chkPasswordChar^.ActiveFont := {$IFDEF IsDesktop} PByte(@CAllFontSettings[1]) {$ELSE} @Tahoma {$ENDIF};
+  {$ENDIF} 
+  {$IFDEF IsDesktop}
+    chkPasswordChar^.BaseProps.OnMouseUpUser^ := chkPasswordChar_OnMouseUpUser;
+  {$ELSE}
+    chkPasswordChar^.BaseProps.OnMouseUpUser := @chkPasswordChar_OnMouseUpUser;
+  {$ENDIF}
+
+  // vkTestX2 should be manually created.
 end;
 
 procedure DrawGUI;

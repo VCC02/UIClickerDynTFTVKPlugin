@@ -37,14 +37,14 @@ uses
   DynTFTTypes, DynTFTConsts,
 
 //<DynTFTComponents>
-  DynTFTButton,
+  //DynTFTButton,
   //DynTFTArrowButton,
   //DynTFTPanel,
-  //DynTFTCheckBox,
+  DynTFTCheckBox,
   //DynTFTScrollBar,
   //DynTFTItems,
   //DynTFTListBox,
-  DynTFTLabel,
+  //DynTFTLabel,
   //DynTFTRadioButton,
   //DynTFTRadioGroup,
   //DynTFTTabButton,
@@ -55,9 +55,9 @@ uses
   //DynTFTComboBox,
   //DynTFTTrackBar,
   //DynTFTProgressBar,
-  DynTFTMessageBox
+  //DynTFTMessageBox,
   //DynTFTVirtualTable,
-  //DynTFTVirtualKeyboardX2,
+  DynTFTVirtualKeyboardX2
 //<EndOfDynTFTComponents> - Do not remove or modify this line!
 
 
@@ -68,12 +68,18 @@ uses
 // Project name: GUI_VKPlugin.dyntftcg //Do not delete or modify this line!
 
 var
-  vkTest: PDynTFTVirtualKeyboard;
+  vkTest: PDynTFTVirtualKeyboard;  //created by Startup
   edtValue: PDynTFTEdit;
+  chkPasswordChar: PDynTFTCheckBox;
+  vkTestX2: PDynTFTVirtualKeyboardX2;  //created by StartupX2
 
 
 const
   DummyConst = 0; //generated because there is no PerInstanceInitConstant.
+
+const
+  C_chkPasswordChar_Caption = 'Password char';
+
   {$IFDEF RTTIREG}
       CAllCreatedBinComponents: array[0..0] of ^PDynTFTBaseComponent = (nil);  // No binary component with global variable.
   {$ENDIF} // RTTIREG

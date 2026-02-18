@@ -43,11 +43,15 @@ uses
   DynTFTVKPluginProperties, ClickerActionProperties,
   ClickerActionPluginAccess,
   TFT, DynTFTUtils, MemManager, DynTFTMessageBox, DynTFTControls, DynTFTEdit,
-  DynTFTGUI, DynTFTGUIObjects;
+  DynTFTGUI, DynTFTGUIObjects, DynTFTHandlers;
 
+
+type
+  TKeyboardType = (kt1x, kt2x);
 
 var
   AddToLogCallback: TOnActionPlugin_AddToLog;
+  KeyboardType: TKeyboardType;
 
 
 procedure AddToLog(AMsg: string);  //thread safe
@@ -83,8 +87,13 @@ end;
 
 
 procedure GetPluginSettingsFromProperties(AProperties: TStringList; AListOfVars: string);
+var
+  KeyboardTypeStr: string;
 begin
-  //ValueStr := AProperties.Values[C...PropertyName];
+  KeyboardTypeStr := AProperties.Values[CKeyboardTypePropertyName];
+  KeyboardType := kt1x;
+  if KeyboardTypeStr = CKeyboardType_2x then
+    KeyboardType := kt2x;
 end;
 
 
@@ -111,7 +120,7 @@ begin
 end;
 
 
-procedure RunDynTFT(APluginReference: Pointer; AOnActionPlugin_SetTemplateVar: TOnActionPlugin_SetTemplateVar; AEditBoxVarName, ACurrentValue, APluginPath: string);
+procedure RunDynTFT(APluginReference: Pointer; AOnActionPlugin_SetTemplateVar: TOnActionPlugin_SetTemplateVar; AEditBoxVarName, ACurrentValue, APluginPath: string; AVKType: TKeyboardType);
 var
   tmrBlinkCaret: TTimer;
   EditBoxVarValue: string;
@@ -164,13 +173,26 @@ begin
         edtValue^.Text := Copy(ACurrentValue, 1, CMaxEditStringLength);
         DynTFTMoveEditCaretToEnd(edtValue);
         DynTFTDrawEdit(edtValue, True);
-        repeat
-          DynTFTUILoop;
-          Application.ProcessMessages;
-          Sleep(1);
 
-          EditBoxVarValue := edtValue^.Text;
-        until not frmDynTFTSimScreen.Running;  //Becomes false when closing the app.
+        //Create keyboard from selected manual creation group:
+        if AVKType = kt1x then
+          CreateGUIGrp_Startup
+        else
+          CreateGUIGrp_StartupX2;
+        try
+          repeat
+            DynTFTUILoop;
+            Application.ProcessMessages;
+            Sleep(1);
+
+            EditBoxVarValue := edtValue^.Text;
+          until not frmDynTFTSimScreen.Running;  //Becomes false when closing the app.
+        finally
+          if AVKType = kt1x then
+            DestroyGUIGrp_Startup
+          else
+            DestroyGUIGrp_StartupX2;
+        end;
       finally
         Dispose(DynTFTMessageBoxMainLoopHandler);
       end;
@@ -271,7 +293,7 @@ begin
         PluginSettings.Free;
       end;
 
-      RunDynTFT(APluginReference, AOnActionPlugin_SetTemplateVar, '$EditBox.Text$', ListOfAllVars.Values['$EditBox.Text$'], ListOfAllVars.Values['$PluginPath$']);
+      RunDynTFT(APluginReference, AOnActionPlugin_SetTemplateVar, '$EditBox.Text$', ListOfAllVars.Values['$EditBox.Text$'], ListOfAllVars.Values['$PluginPath$'], KeyboardType);
     finally
       ListOfAllVars.Free;
     end;

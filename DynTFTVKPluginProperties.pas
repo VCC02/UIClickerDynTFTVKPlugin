@@ -42,6 +42,9 @@ const
 
   CKeyboardTypePropertyName = 'KeyboardType';
 
+  CKeyboardType_1x = 'kt1x';
+  CKeyboardType_2x = 'kt2x';
+
   CRequiredPropertyNames: array[0..CPropertiesCount - 1] of string = (  //these are the expected property names, configured in plugin properties
     CKeyboardTypePropertyName
   );
@@ -62,7 +65,7 @@ const
   );
 
   CPluginEnumStrings: array[0..CPropertiesCount - 1] of string = (
-    '1x' + #4#5 + '2x' + #4#5 //KeyboardType
+    CKeyboardType_1x + #4#5 + CKeyboardType_2x + #4#5 //KeyboardType
   );
 
   CPluginHints: array[0..CPropertiesCount - 1] of string = (
@@ -74,7 +77,7 @@ const
   );
 
   CPluginDefaultValues: array[0..CPropertiesCount - 1] of string = (
-    '1x' //KeyboardType
+    CKeyboardType_1x //KeyboardType
   );
 
 

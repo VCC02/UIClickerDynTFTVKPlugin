@@ -133,7 +133,7 @@
       <CustomOptions Value="-dMaxMMAtProjectLevel
 -dColorThemeFromLib
 -dColorThemeAtProjectLevel
--d_DynTFTFontSupport"/>
+-dDynTFTFontSupport"/>
       <ExecuteBefore>
         <Command Value="&quot;$(ProjPath)..\UIClicker\Tools\ClkDbgSym\ClkDbgSym.exe&quot; &quot;$(ProjPath)lib\$(TargetCPU)-$(TargetOS)\$NameOnly($(ProjFile)).DbgSym&quot; &quot;$(ProjPath)$NameOnly($(ProjFile)).ppr&quot;"/>
       </ExecuteBefore>
