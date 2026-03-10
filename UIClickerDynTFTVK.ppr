@@ -42,7 +42,7 @@ uses
   DynTFTVKDM, DynTFTSimScreenForm,
   DynTFTVKPluginProperties, ClickerActionProperties,
   ClickerActionPluginAccess,
-  TFT, DynTFTUtils, MemManager, DynTFTMessageBox, DynTFTControls, DynTFTEdit,
+  TFT, DynTFTUtils, MemManager, DynTFTMessageBox, DynTFTControls, DynTFTEdit, DynTFTCheckBox,
   DynTFTGUI, DynTFTGUIObjects, DynTFTHandlers;
 
 
@@ -169,8 +169,12 @@ begin
           end;
         end;
 
+        chkPasswordChar^.Checked := frmDynTFTSimScreen.PasswordChar;
+        DynTFTDrawCheckBox(chkPasswordChar, True);
+
         edtValue^.BaseProps.Focused := 1;
         edtValue^.Text := Copy(ACurrentValue, 1, CMaxEditStringLength);
+        edtValue^.PasswordText := chkPasswordChar^.Checked;
         DynTFTMoveEditCaretToEnd(edtValue);
         DynTFTDrawEdit(edtValue, True);
 

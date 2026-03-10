@@ -26,7 +26,7 @@ unit DynTFTSimScreenForm;
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  {Windows, Messages,} SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ComCtrls, ExtCtrls;
 
 type
@@ -63,6 +63,7 @@ type
     { Private declarations }
     FRunning: Boolean;
     FPluginPath: string;
+    FPasswordChar: Boolean;
 
     procedure LoadSettingsFromIni;
     procedure SaveSettingsToIni;
@@ -73,6 +74,7 @@ type
 
     property Running: Boolean read FRunning write FRunning;
     property PluginPath: string read FPluginPath write FPluginPath;
+    property PasswordChar: Boolean read FPasswordChar write FPasswordChar;
   end;
 
 var
@@ -101,6 +103,9 @@ begin
     chkShowHeightLine.Checked := Ini.ReadBool('ScreenOptions', 'chkShowHeightLine.Checked', chkShowHeightLine.Checked);
     trbScreenWidth.Position := Ini.ReadInteger('ScreenOptions', 'trbScreenWidth.Position', 320);
     trbScreenHeight.Position := Ini.ReadInteger('ScreenOptions', 'trbScreenHeight.Position', 240);
+
+    FPasswordChar := Ini.ReadBool('Settings', 'PasswordChar', FPasswordChar);
+    //other user settings
   finally
     Ini.Free;
   end;
@@ -122,6 +127,9 @@ begin
     Ini.WriteBool('ScreenOptions', 'chkShowHeightLine.Checked', chkShowHeightLine.Checked);
     Ini.WriteInteger('ScreenOptions', 'trbScreenWidth.Position', trbScreenWidth.Position);
     Ini.WriteInteger('ScreenOptions', 'trbScreenHeight.Position', trbScreenHeight.Position);
+
+    Ini.WriteBool('Settings', 'PasswordChar', FPasswordChar);
+    //other user settings
 
     Ini.UpdateFile;
   finally
@@ -191,6 +199,7 @@ end;
 procedure TfrmDynTFTSimScreen.FormCreate(Sender: TObject);
 begin
   FRunning := False;
+  FPasswordChar := False;
   tmrStartup.Enabled := True;
 end;
 
