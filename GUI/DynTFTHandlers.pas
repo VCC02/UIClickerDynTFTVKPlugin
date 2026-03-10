@@ -318,6 +318,7 @@ begin //CodegenSym:handler:begin
   edtValue^.PasswordText := PDynTFTCheckBox(TPtrRec(Sender))^.Checked;
   DynTFTEditAfterTypingText(edtValue);
   DynTFTFocusComponent(PDynTFTBaseComponent(TPtrRec(edtValue)));
+  frmDynTFTSimScreen.PasswordChar := edtValue^.PasswordText;
 end; //CodegenSym:handler:end
 
 
